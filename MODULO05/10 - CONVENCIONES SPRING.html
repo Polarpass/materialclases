@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Configuración de Proyectos Spring Boot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="infographic-container">
+        <header class="infographic-header">
+            <h1 class="infographic-title animate-in">
+                <i class="fas fa-cogs"></i> Configuración de Proyectos Spring Boot
+            </h1>
+            <p class="infographic-subtitle animate-in delay-1">
+                Guía completa para configurar proyectos en start.spring.io - Convenciones y buenas prácticas
+            </p>
+        </header>
+        
+        <div class="infographic-content">
+            <!-- Hero Section -->
+            <div class="spring-hero animate-in delay-1">
+                <h2 class="spring-title">¿Qué debemos ingresar en start.spring.io?</h2>
+                <p class="spring-subtitle">Configurar correctamente los campos Group, Artifact, Name y Description es fundamental para mantener consistencia y seguir las mejores prácticas en proyectos Java con Spring Boot.</p>
+            </div>
+            
+            <!-- Campos principales -->
+            <div class="form-fields animate-in delay-1">
+                <h2 class="card-title" style="text-align: center; border-bottom: none;">
+                    <i class="fas fa-keyboard"></i> Campos del Project Metadata
+                </h2>
+                
+                <div class="field-container">
+                    <!-- Group -->
+                    <div class="field-card field-group animate-in delay-1">
+                        <div class="field-header">
+                            <div class="field-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <h3>Group</h3>
+                                <p>Identificador único del grupo de proyectos</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <p><strong>Convención:</strong> Usar el dominio inverso de la organización</p>
+                            <p><strong>Ejemplo:</strong> com.edumanage o edu.institucion</p>
+                            <p><strong>Importante:</strong> Mantener el mismo Group para todos los microservicios del sistema</p>
+                            
+                            <div class="field-example">
+                                <strong>Para EduManage:</strong> com.edumanage
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Artifact -->
+                    <div class="field-card field-artifact animate-in delay-2">
+                        <div class="field-header">
+                            <div class="field-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div>
+                                <h3>Artifact</h3>
+                                <p>Nombre específico del microservicio</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <p><strong>Convención:</strong> Nombre en minúsculas, sin espacios</p>
+                            <p><strong>Ejemplo:</strong> estudiantes-service o estudiantes-microservice</p>
+                            <p><strong>Recomendado:</strong> Usar sufijo "-service" para claridad</p>
+                            
+                            <div class="field-example">
+                                <strong>Para el microservicio:</strong> estudiantes-service
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Name -->
+                    <div class="field-card field-name animate-in delay-1">
+                        <div class="field-header">
+                            <div class="field-icon">
+                                <i class="fas fa-signature"></i>
+                            </div>
+                            <div>
+                                <h3>Name</h3>
+                                <p>Nombre descriptivo del proyecto</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <p><strong>Convención:</strong> Usualmente igual que Artifact</p>
+                            <p><strong>Opcional:</strong> Puede ser más descriptivo si se desea</p>
+                            <p><strong>Propósito:</strong> Para documentación y reconocimiento</p>
+                            
+                            <div class="field-example">
+                                <strong>Ejemplo:</strong> estudiantes-service
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="field-card field-description animate-in delay-2">
+                        <div class="field-header">
+                            <div class="field-icon">
+                                <i class="fas fa-align-left"></i>
+                            </div>
+                            <div>
+                                <h3>Description</h3>
+                                <p>Breve descripción de la funcionalidad</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <p><strong>Convención:</strong> Descripción clara y concisa</p>
+                            <p><strong>Ejemplo:</strong> Describe qué hace el microservicio</p>
+                            <p><strong>Propósito:</strong> Para documentación automática</p>
+                            
+                            <div class="field-example">
+                                <strong>Ejemplo:</strong> Microservicio para gestión centralizada de estudiantes, matrículas y antecedentes académicos
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Package name -->
+                    <div class="field-card field-package animate-in delay-1">
+                        <div class="field-header">
+                            <div class="field-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <div>
+                                <h3>Package name</h3>
+                                <p>Estructura de paquetes Java</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <p><strong>Convención:</strong> Se autogenera como: Group + Artifact</p>
+                            <p><strong>Ejemplo:</strong> com.edumanage.estudiantesservice</p>
+                            <p><strong>Importante:</strong> Spring Initializr lo genera automáticamente</p>
+                            
+                            <div class="field-example">
+                                <strong>Se genera:</strong> com.edumanage.estudiantesservice
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Packaging -->
+                    <div class="field-card field-packaging animate-in delay-2">
+                        <div class="field-header">
+                            <div class="field-icon">
+                                <i class="fas fa-archive"></i>
+                            </div>
+                            <div>
+                                <h3>Packaging</h3>
+                                <p>Tipo de empaquetado</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <p><strong>Convención:</strong> Jar para microservicios</p>
+                            <p><strong>Alternativa:</strong> War (para aplicaciones web tradicionales)</p>
+                            <p><strong>Recomendación:</strong> Jar con Spring Boot Embedded Tomcat</p>
+                            
+                            <div class="field-example">
+                                <strong>Configuración:</strong> Jar ✓
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ejemplo EduManage -->
+            <div class="edu-example animate-in delay-2">
+                <div class="example-header">
+                    <div class="example-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h2 style="color: #2d3748;">Caso: Sistema de Gestión Educativa (EduManage)</h2>
+                        <p>Ejemplo práctico con 10 microservicios</p>
+                    </div>
+                </div>
+                
+                <div class="two-columns">
+                    <div>
+                        <h3><i class="fas fa-info-circle"></i> Contexto del Sistema</h3>
+                        <p>La institución requiere una solución para mantener un registro estructurado, confiable y consultable de los estudiantes y su información académica asociada.</p>
+                        
+                        <div class="package-structure">
+                            <div class="folder">com.edumanage</div>
+                            <div class="package-line folder">├── estudiantes-service</div>
+                            <div class="package-line folder">├── profesores-service</div>
+                            <div class="package-line folder">├── cursos-service</div>
+                            <div class="package-line folder">├── calificaciones-service</div>
+                            <div class="package-line folder">└── ...</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3><i class="fas fa-list-ol"></i> Estructura de Microservicios</h3>
+                        <div class="microservices-grid">
+                            <div class="microservice-card">
+                                <div class="ms-number">1</div>
+                                <h4>Estudiantes</h4>
+                                <p>estudiantes, matrículas, antecedentes</p>
+                            </div>
+                            <div class="microservice-card">
+                                <div class="ms-number">2</div>
+                                <h4>Profesores</h4>
+                                <p>profesores, asignaturas, horarios</p>
+                            </div>
+                            <div class="microservice-card">
+                                <div class="ms-number">3</div>
+                                <h4>Cursos</h4>
+                                <p>cursos, asignaturas, prerequisitos</p>
+                            </div>
+                            <div class="microservice-card">
+                                <div class="ms-number">4</div>
+                                <h4>Calificaciones</h4>
+                                <p>evaluaciones, calificaciones, escalas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ejemplo concreto -->
+            <div class="concrete-example animate-in delay-1">
+                <h2 class="card-title" style="border-bottom: none; text-align: center;">
+                    <i class="fas fa-code"></i> Ejemplo Concreto - Microservicio de Estudiantes
+                </h2>
+                
+                <div class="example-code">
+                    <div class="code-line"><span class="code-field">Project:</span></div>
+                    <div class="code-line"><span class="code-comment">  Language:</span> <span class="code-value">Java</span></div>
+                    <div class="code-line"><span class="code-comment">  Spring Boot:</span> <span class="code-value">3.2.0</span> <span class="code-comment"># Última versión estable</span></div>
+                    <div class="code-line"><br></div>
+                    <div class="code-line"><span class="code-field">Project Metadata:</span></div>
+                    <div class="code-line"><span class="code-comment">  Group:</span> <span class="code-value">com.edumanage</span></div>
+                    <div class="code-line"><span class="code-comment">  Artifact:</span> <span class="code-value">estudiantes-service</span></div>
+                    <div class="code-line"><span class="code-comment">  Name:</span> <span class="code-value">estudiantes-service</span></div>
+                    <div class="code-line"><span class="code-comment">  Description:</span> <span class="code-value">Microservicio para gestión centralizada de estudiantes, matrículas y antecedentes académicos</span></div>
+                    <div class="code-line"><span class="code-comment">  Package name:</span> <span class="code-value">com.edumanage.estudiantesservice</span> <span class="code-comment"># Autogenerado</span></div>
+                    <div class="code-line"><span class="code-comment">  Packaging:</span> <span class="code-value">Jar</span></div>
+                    <div class="code-line"><span class="code-comment">  Java:</span> <span class="code-value">17</span> <span class="code-comment"># Versión LTS recomendada</span></div>
+                </div>
+                
+                <div class="two-columns" style="margin-top: var(--space-lg);">
+                    <div>
+                        <h4><i class="fas fa-check-circle"></i> Resultado Esperado</h4>
+                        <ul class="checklist">
+                            <li>Estructura de paquetes clara y organizada</li>
+                            <li>Nombre descriptivo del microservicio</li>
+                            <li>Consistencia con otros microservicios</li>
+                            <li>Documentación automática generada</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4><i class="fas fa-sitemap"></i> Estructura Generada</h4>
+                        <div class="package-structure" style="font-size: 0.8rem;">
+                            <div class="folder">estudiantes-service/</div>
+                            <div class="package-line folder">├── src/</div>
+                            <div class="package-line folder">│   ├── main/</div>
+                            <div class="package-line folder">│   │   ├── java/com/edumanage/estudiantesservice/</div>
+                            <div class="package-line folder">│   │   │   ├── controller/</div>
+                            <div class="package-line folder">│   │   │   ├── service/</div>
+                            <div class="package-line folder">│   │   │   ├── repository/</div>
+                            <div class="package-line folder">│   │   │   ├── model/</div>
+                            <div class="package-line folder">│   │   │   └── config/</div>
+                            <div class="package-line folder">│   │   └── resources/</div>
+                            <div class="package-line folder">│   └── test/</div>
+                            <div class="package-line file">└── pom.xml</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buenas prácticas -->
+            <div class="info-card card-2 animate-in delay-2">
+                <div class="card-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h2 class="card-title">Buenas Prácticas y Recomendaciones</h2>
+                <div class="card-content">
+                    <div class="best-practices">
+                        <div class="practice-card">
+                            <div class="practice-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <h4>Nomenclatura</h4>
+                            <p>Usar nombres descriptivos en inglés, minúsculas y sin espacios</p>
+                        </div>
+                        
+                        <div class="practice-card">
+                            <div class="practice-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <h4>Consistencia</h4>
+                            <p>Mantener mismo Group para todos los microservicios del sistema</p>
+                        </div>
+                        
+                        <div class="practice-card">
+                            <div class="practice-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <h4>Versiones Java</h4>
+                            <p>Usar Java 17 o 21 (LTS - Long Term Support)</p>
+                        </div>
+                        
+                        <div class="practice-card">
+                            <div class="practice-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>Spring Boot</h4>
+                            <p>Usar la última versión estable (actualmente 3.x.x)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="version-section">
+                        <h3 class="text-center" style="margin-bottom: var(--space-lg);">
+                            <i class="fas fa-robot"></i> Configuraciones Técnicas Recomendadas
+                        </h3>
+                        
+                        <div class="version-grid">
+                            <div class="version-card">
+                                <div class="version-icon">
+                                    <i class="fab fa-java"></i>
+                                </div>
+                                <h3>Java Version</h3>
+                                <p><strong>Recomendado:</strong> 17 o 21</p>
+                                <p>Versiones LTS con soporte a largo plazo</p>
+                            </div>
+                            
+                            <div class="version-card">
+                                <div class="version-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <h3>Spring Boot</h3>
+                                <p><strong>Recomendado:</strong> 3.2.x</p>
+                                <p>Última versión estable con mejoras de seguridad</p>
+                            </div>
+                            
+                            <div class="version-card">
+                                <div class="version-icon">
+                                    <i class="fas fa-archive"></i>
+                                </div>
+                                <h3>Packaging</h3>
+                                <p><strong>Recomendado:</strong> Jar</p>
+                                <p>Para microservicios con Tomcat embebido</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="callout" style="background-color: rgba(107, 196, 166, 0.1); border-left: 4px solid #6bc4a6; padding: var(--space-md); margin: var(--space-md) 0; border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;">
+                        <div class="callout-title" style="font-weight: bold; color: #6bc4a6; margin-bottom: var(--space-xs);">
+                            Checklist para Estudiantes
+                        </div>
+                        <p>Antes de generar tu proyecto en start.spring.io, verifica:</p>
+                        <ul class="checklist">
+                            <li>Group sigue el formato dominio inverso</li>
+                            <li>Artifact usa minúsculas y sin espacios</li>
+                            <li>Description es clara y descriptiva</li>
+                            <li>Java versión es 17 o superior</li>
+                            <li>Packaging es Jar para microservicios</li>
+                            <li>Spring Boot es versión 3.x.x</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conclusión -->
+            <div class="info-card card-3 animate-in delay-3">
+                <div class="card-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2 class="card-title">Conclusión para Estudiantes</h2>
+                <div class="card-content">
+                    <div class="two-columns">
+                        <div>
+                            <h4><i class="fas fa-lightbulb"></i> Puntos Clave</h4>
+                            <ul class="checklist">
+                                <li>Group = Dominio inverso de la organización</li>
+                                <li>Artifact = Nombre del microservicio</li>
+                                <li>Name = Usualmente igual que Artifact</li>
+                                <li>Description = Breve y descriptiva</li>
+                                <li>Package name = Se autogenera (Group + Artifact)</li>
+                                <li>Packaging = Jar para microservicios</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h4><i class="fas fa-rocket"></i> Para el Proyecto Final</h4>
+                            <p>Sigue estas convenciones en tu proyecto:</p>
+                            <div class="field-example" style="margin-top: var(--space-sm);">
+                                <strong>Ejemplo para tu sistema:</strong><br>
+                                Group: com.tuempresa<br>
+                                Artifact: tu-sistema-service<br>
+                                Java: 17<br>
+                                Spring Boot: 3.2.0
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quote-section" style="background-color: rgba(74, 111, 165, 0.1); border-radius: var(--border-radius-md); padding: var(--space-lg); margin: var(--space-lg) 0; text-align: center; border-left: 5px solid #4a6fa5;">
+                        <p style="font-style: italic; font-size: 1.1rem;">
+                            "Una configuración correcta desde el inicio evita problemas de compatibilidad, mantenimiento y despliegue en el futuro."
+                        </p>
+                        <p style="font-weight: bold; margin-top: var(--space-sm); color: var(--color-dark);">
+                            - Buenas prácticas en desarrollo Spring Boot
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="infographic-footer">
+            <p class="mb-1">Una configuración correcta es el primer paso hacia un proyecto Spring Boot exitoso y mantenible.</p>
+            <p><span class="footer-logo">Desarrollo de Microservicios - Spring Boot</span> | Material educativo para estudiantes</p>
+            <p class="mt-1">
+                <i class="fas fa-code" style="color: var(--color-primary);"></i> 
+                Recuerda: Group + Artifact + Description clara = Proyecto bien estructurado
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animación para las tarjetas de campos
+            const fieldCards = document.querySelectorAll('.field-card');
+            fieldCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+                
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            // Animación para las tarjetas de microservicios
+            const msCards = document.querySelectorAll('.microservice-card');
+            msCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100 + 500);
+                
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            // Animación para las tarjetas de buenas prácticas
+            const practiceCards = document.querySelectorAll('.practice-card');
+            practiceCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150 + 1000);
+                
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            
+            // Efecto hover mejorado
+            const allCards = document.querySelectorAll('.field-card, .microservice-card, .practice-card, .version-card');
+            allCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                    this.style.boxShadow = 'var(--shadow-lg)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = 'var(--shadow-md)';
+                });
+            });
+            
+            // Resaltar ejemplos de código
+            const codeExamples = document.querySelectorAll('.field-example, .example-code');
+            codeExamples.forEach(example => {
+                example.addEventListener('click', function() {
+                    this.style.backgroundColor = this.style.backgroundColor === 'rgba(0, 0, 0, 0.05)' ? 
+                        'rgba(0, 0, 0, 0.03)' : 'rgba(0, 0, 0, 0.05)';
+                });
+            });
+            
+            // Efecto en los números de microservicios
+            const msNumbers = document.querySelectorAll('.ms-number');
+            msNumbers.forEach(number => {
+                number.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.2) rotate(5deg)';
+                    this.style.transition = 'transform 0.3s';
+                });
+                
+                number.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+            
+            // Mostrar/ocultar detalles adicionales
+            const checklistItems = document.querySelectorAll('.checklist li');
+            checklistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.color = this.style.color === 'var(--color-primary)' ? 
+                        'inherit' : 'var(--color-primary)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
