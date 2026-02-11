@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minuta de Reunión - Daily Scrum Meeting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a6fa5;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .instructions {
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        
+        .instructions h3 {
+            color: #2980b9;
+            margin-bottom: 8px;
+        }
+        
+        .form-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .form-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 1.4rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .participant-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .participant-input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        
+        .btn-add {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-add:hover {
+            background-color: #219653;
+        }
+        
+        .btn-remove {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-left: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-remove:hover {
+            background-color: #c0392b;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #2c3e50;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1a252f;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .minuta-preview {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a6fa5;
+        }
+        
+        .preview-content {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+        
+        .preview-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        
+        .preview-table .section-title {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .participants-list {
+            margin-bottom: 10px;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .minuta-preview, .minuta-preview * {
+                visibility: visible;
+            }
+            
+            .minuta-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-file-alt"></i> Minuta de Reunión - Daily Scrum Meeting</h1>
+            <p class="subtitle">Formulario interactivo para registrar reuniones ágiles</p>
+        </header>
+        
+        <div class="instructions no-print">
+            <h3><i class="fas fa-info-circle"></i> Instrucciones</h3>
+            <p>Complete todos los campos del formulario para generar la minuta de reunión. Puede agregar múltiples participantes, anuncios, debates y acuerdos. Al finalizar, use el botón "Generar Minuta" para visualizar el documento y luego imprimirlo o guardarlo como PDF.</p>
+        </div>
+        
+        <form id="minutaForm" class="no-print">
+            <div class="form-section">
+                <h2 class="form-title"><i class="fas fa-heading"></i> Información General</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="actaNumero">Número de Acta:</label>
+                        <input type="text" id="actaNumero" value="ACTA 20.04.26 #020" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fechaReunion">Fecha de la Reunión:</label>
+                        <input type="date" id="fechaReunion" value="2026-04-20" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="form-title"><i class="fas fa-users"></i> Participantes</h2>
+                
+                <div class="form-group">
+                    <label>Participantes presentes:</label>
+                    <div id="participantesPresentes">
+                        <div class="participant-item">
+                            <input type="text" class="participant-input" value="Juan Pérez, Scrum master" placeholder="Nombre y rol">
+                            <button type="button" class="btn-remove" onclick="removeParticipant(this)"><i class="fas fa-minus"></i></button>
+                        </div>
+                        <div class="participant-item">
+                            <input type="text" class="participant-input" value="María García, Coordinadora de Ventas" placeholder="Nombre y rol">
+                            <button type="button" class="btn-remove" onclick="removeParticipant(this)"><i class="fas fa-minus"></i></button>
+                        </div>
+                        <div class="participant-item">
+                            <input type="text" class="participant-input" value="Carlos Ramírez, Jefe de Desarrollo" placeholder="Nombre y rol">
+                            <button type="button" class="btn-remove" onclick="removeParticipant(this)"><i class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add" onclick="addParticipant('participantesPresentes')"><i class="fas fa-plus"></i> Agregar Participante</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>Participantes ausentes:</label>
+                    <div id="participantesAusentes">
+                        <div class="participant-item">
+                            <input type="text" class="participant-input" value="Pedro Martínez, Desarrollador (con aviso)" placeholder="Nombre y rol">
+                            <button type="button" class="btn-remove" onclick="removeParticipant(this)"><i class="fas fa-minus"></i></button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add" onclick="addParticipant('participantesAusentes')"><i class="fas fa-plus"></i> Agregar Ausente</button>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="form-title"><i class="fas fa-bullhorn"></i> Anuncios</h2>
+                <div class="form-group">
+                    <label for="anuncios">Anuncios importantes:</label>
+                    <textarea id="anuncios" placeholder="Ingrese los anuncios de la reunión">Creación de un plugin nuevo: Se discute sobre la creación de un plugin nuevo para la aplicación web y móvil.</textarea>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="form-title"><i class="fas fa-comments"></i> Debates</h2>
+                <div class="form-group">
+                    <label for="debates">Temas discutidos:</label>
+                    <textarea id="debates" placeholder="Ingrese los debates de la reunión">- Funcionalidades del plugin:
+  - Carlos Ramírez presenta las funcionalidades que se desean incluir en el plugin.
+  - Ana Sánchez discute sobre la estrategia de marketing para promover el plugin.
+  - Juan Pérez se compromete a tener listos los recursos necesarios para el desarrollo.
+
+- Desarrollo del plugin:
+  - María García presenta el plan para el desarrollo del plugin.
+  - Luisa Gómez discute sobre el presupuesto asignado para el desarrollo.
+  - Carlos Ramírez se compromete a tener listos los recursos necesarios para el desarrollo.</textarea>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2 class="form-title"><i class="fas fa-handshake"></i> Acuerdos</h2>
+                <div class="form-group">
+                    <label for="acuerdos">Acuerdos alcanzados:</label>
+                    <textarea id="acuerdos" placeholder="Ingrese los acuerdos de la reunión">- Crear un plugin nuevo para la aplicación web y móvil.
+- Aprobar plan y recursos para el desarrollo del plugin.
+- Ajustar la estrategia de marketing según sea necesario.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="proximaReunion">Próxima reunión:</label>
+                    <input type="date" id="proximaReunion" value="2026-04-21">
+                </div>
+            </div>
+            
+            <div class="buttons-container">
+                <button type="button" class="btn btn-primary" onclick="generarMinuta()">
+                    <i class="fas fa-file-alt"></i> Generar Minuta
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="imprimirMinuta()">
+                    <i class="fas fa-print"></i> Imprimir / PDF
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Limpiar Formulario
+                </button>
+            </div>
+        </form>
+        
+        <div id="minutaPreview" class="minuta-preview">
+            <div class="preview-header">
+                <h2>MINUTA DE REUNIÓN - DAILY SCRUM MEETING</h2>
+                <p id="previewFecha">Fecha: 20 de abril de 2026</p>
+            </div>
+            
+            <div class="preview-content">
+                <table class="preview-table">
+                    <tr>
+                        <td class="section-title" width="30%">Número de Acta</td>
+                        <td id="previewActaNumero">ACTA 20.04.26 #020</td>
+                    </tr>
+                    <tr>
+                        <td class="section-title">Participantes</td>
+                        <td id="previewParticipantes">
+                            <!-- Los participantes se llenan con JS -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="section-title">Participantes Ausentes</td>
+                        <td id="previewAusentes">
+                            <!-- Los ausentes se llenan con JS -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="section-title">Anuncios</td>
+                        <td id="previewAnuncios">
+                            <!-- Los anuncios se llenan con JS -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="section-title">Debates</td>
+                        <td id="previewDebates">
+                            <!-- Los debates se llenan con JS -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="section-title">Acuerdos</td>
+                        <td id="previewAcuerdos">
+                            <!-- Los acuerdos se llenan con JS -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="section-title">Próxima Reunión</td>
+                        <td id="previewProximaReunion">21 de abril de 2026</td>
+                    </tr>
+                </table>
+                
+                <div class="footer-note">
+                    <p>Documento generado el <span id="fechaGeneracion"></span> - Daily Scrum Meeting</p>
+                </div>
+            </div>
+            
+            <div class="buttons-container no-print">
+                <button type="button" class="btn btn-success" onclick="imprimirMinuta()">
+                    <i class="fas fa-print"></i> Imprimir / Guardar como PDF
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="volverAlFormulario()">
+                    <i class="fas fa-edit"></i> Editar Minuta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para agregar participantes
+        function addParticipant(containerId) {
+            const container = document.getElementById(containerId);
+            const participantDiv = document.createElement('div');
+            participantDiv.className = 'participant-item';
+            participantDiv.innerHTML = `
+                <input type="text" class="participant-input" placeholder="Nombre y rol">
+                <button type="button" class="btn-remove" onclick="removeParticipant(this)"><i class="fas fa-minus"></i></button>
+            `;
+            container.appendChild(participantDiv);
+        }
+        
+        // Función para eliminar participantes
+        function removeParticipant(button) {
+            const participantItem = button.closest('.participant-item');
+            participantItem.remove();
+        }
+        
+        // Función para formatear fecha
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('es-ES', options);
+        }
+        
+        // Función para generar la minuta
+        function generarMinuta() {
+            // Obtener valores del formulario
+            const actaNumero = document.getElementById('actaNumero').value;
+            const fechaReunion = document.getElementById('fechaReunion').value;
+            const anuncios = document.getElementById('anuncios').value;
+            const debates = document.getElementById('debates').value;
+            const acuerdos = document.getElementById('acuerdos').value;
+            const proximaReunion = document.getElementById('proximaReunion').value;
+            
+            // Obtener participantes presentes
+            const presentesInputs = document.querySelectorAll('#participantesPresentes .participant-input');
+            const participantesPresentes = Array.from(presentesInputs)
+                .map(input => input.value.trim())
+                .filter(value => value !== '');
+            
+            // Obtener participantes ausentes
+            const ausentesInputs = document.querySelectorAll('#participantesAusentes .participant-input');
+            const participantesAusentes = Array.from(ausentesInputs)
+                .map(input => input.value.trim())
+                .filter(value => value !== '');
+            
+            // Actualizar la vista previa
+            document.getElementById('previewActaNumero').textContent = actaNumero;
+            document.getElementById('previewFecha').textContent = `Fecha: ${formatDate(fechaReunion)}`;
+            
+            // Mostrar participantes
+            const previewParticipantes = document.getElementById('previewParticipantes');
+            previewParticipantes.innerHTML = '';
+            participantesPresentes.forEach(participante => {
+                const p = document.createElement('p');
+                p.className = 'participants-list';
+                p.textContent = `• ${participante}`;
+                previewParticipantes.appendChild(p);
+            });
+            
+            // Mostrar ausentes
+            const previewAusentes = document.getElementById('previewAusentes');
+            previewAusentes.innerHTML = '';
+            participantesAusentes.forEach(ausente => {
+                const p = document.createElement('p');
+                p.className = 'participants-list';
+                p.textContent = `• ${ausente}`;
+                previewAusentes.appendChild(p);
+            });
+            
+            // Mostrar anuncios, debates y acuerdos con formato
+            document.getElementById('previewAnuncios').innerHTML = anuncios.replace(/\n/g, '<br>');
+            document.getElementById('previewDebates').innerHTML = debates.replace(/\n/g, '<br>');
+            document.getElementById('previewAcuerdos').innerHTML = acuerdos.replace(/\n/g, '<br>');
+            document.getElementById('previewProximaReunion').textContent = formatDate(proximaReunion);
+            
+            // Mostrar fecha de generación
+            const fechaGeneracion = new Date().toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('fechaGeneracion').textContent = fechaGeneracion;
+            
+            // Mostrar la vista previa y ocultar el formulario
+            document.getElementById('minutaForm').style.display = 'none';
+            document.getElementById('minutaPreview').style.display = 'block';
+            
+            // Desplazar hacia la vista previa
+            document.getElementById('minutaPreview').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Función para volver al formulario
+        function volverAlFormulario() {
+            document.getElementById('minutaPreview').style.display = 'none';
+            document.getElementById('minutaForm').style.display = 'block';
+            
+            // Desplazar hacia el formulario
+            document.getElementById('minutaForm').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Función para imprimir/guardar como PDF
+        function imprimirMinuta() {
+            window.print();
+        }
+        
+        // Inicializar con la fecha actual si no hay valor
+        document.addEventListener('DOMContentLoaded', function() {
+            const hoy = new Date().toISOString().split('T')[0];
+            
+            if (!document.getElementById('fechaReunion').value) {
+                document.getElementById('fechaReunion').value = hoy;
+            }
+            
+            // Establecer la próxima reunión para mañana por defecto
+            if (!document.getElementById('proximaReunion').value) {
+                const manana = new Date();
+                manana.setDate(manana.getDate() + 1);
+                document.getElementById('proximaReunion').value = manana.toISOString().split('T')[0];
+            }
+        });
+    </script>
+</body>
+</html>
