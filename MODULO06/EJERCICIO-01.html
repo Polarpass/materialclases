@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Calculadora API con Spring Boot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            padding: 30px 20px;
+            color: #2d3748;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* HEADER - ESTILO CALCULADORA */
+        .header {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            border-bottom: 8px solid #f59e0b;
+        }
+
+        .calculator-badge {
+            background: #f59e0b;
+            color: black;
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px -5px rgba(245,158,11,0.3);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .header h1 i {
+            color: #f59e0b;
+            margin-right: 15px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* CONTENIDO */
+        .content {
+            padding: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 30px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* TARJETAS */
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            border-color: #f59e0b;
+            box-shadow: 0 20px 30px -10px rgba(245,158,11,0.1);
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 4px solid;
+            padding-bottom: 15px;
+        }
+
+        .card-title i {
+            font-size: 2rem;
+        }
+
+        /* GRID DE OPERACIONES */
+        .operations-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        @media (max-width: 900px) {
+            .operations-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .operations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .operation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 15px -5px rgba(0,0,0,0.05);
+            border: 2px solid;
+            transition: transform 0.2s;
+        }
+
+        .operation-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .op-suma { border-color: #4299e1; }
+        .op-resta { border-color: #ed8936; }
+        .op-multi { border-color: #9f7aea; }
+        .op-div { border-color: #48bb78; }
+
+        .op-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .op-suma .op-icon { color: #4299e1; }
+        .op-resta .op-icon { color: #ed8936; }
+        .op-multi .op-icon { color: #9f7aea; }
+        .op-div .op-icon { color: #48bb78; }
+
+        .op-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .op-example {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        /* BLOQUES DE CÓDIGO */
+        .code-block {
+            background: #0b1e2e;
+            border-radius: 20px;
+            padding: 25px;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            margin: 20px 0;
+            border-left: 8px solid;
+            overflow-x: auto;
+            box-shadow: 0 15px 25px -10px rgba(0,0,0,0.2);
+        }
+
+        .code-block.v1 { border-left-color: #4299e1; }
+        .code-block.v2 { border-left-color: #f59e0b; }
+
+        .code-line {
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .annotation {
+            color: #ffb86b;
+        }
+
+        .string {
+            color: #6bc4a6;
+        }
+
+        .comment {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .number {
+            color: #f59e0b;
+        }
+
+        /* COMPARADOR V1 VS V2 */
+        .version-comparator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 768px) {
+            .version-comparator {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .version-box {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 30px;
+            border: 3px solid;
+        }
+
+        .v1-box { border-color: #4299e1; }
+        .v2-box { border-color: #f59e0b; }
+
+        .version-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .version-badge {
+            background: #4299e1;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .v2-badge {
+            background: #f59e0b;
+            color: black;
+        }
+
+        /* EJEMPLO VIDA REAL */
+        .real-world {
+            background: linear-gradient(145deg, #fef3c7, #fffbeb);
+            border-left: 10px solid #f59e0b;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .real-icon {
+            font-size: 4rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .real-content {
+            flex: 1;
+        }
+
+        .real-content h3 {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            color: #92400e;
+        }
+
+        /* TABLA ENDPOINTS */
+        .endpoint-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px -5px rgba(0,0,0,0.05);
+        }
+
+        .endpoint-table th {
+            background: #1e293b;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.1rem;
+        }
+
+        .endpoint-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .endpoint-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .method-get {
+            background: #4299e1;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .url-path {
+            background: #f1f5f9;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-family: monospace;
+        }
+
+        /* BOTONES DE ACCIÓN */
+        .action-button {
+            display: inline-block;
+            background: #f59e0b;
+            color: black;
+            font-weight: 700;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: all 0.2s;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .action-button:hover {
+            background: #d97706;
+            transform: scale(1.05);
+            color: white;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-top: 4px solid #f59e0b;
+        }
+
+        .footer i {
+            color: #f59e0b;
+        }
+
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 3px dashed #cbd5e0;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .challenge-box {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            color: white;
+            padding: 30px;
+            border-radius: 24px;
+            margin-top: 30px;
+        }
+
+        .challenge-box h3 {
+            color: #f59e0b;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER - CALCULADORA API -->
+        <div class="header">
+            <div class="calculator-badge">
+                <i class="fas fa-calculator"></i> CALCULADORA API
+            </div>
+            <h1>
+                <i class="fas fa-code"></i> Endpoints Aritméticos
+            </h1>
+            <p>Suma · Resta · Multiplicación · División</p>
+            <p style="margin-top: 20px; font-size: 1.1rem; opacity: 0.9;">
+                <i class="fas fa-arrow-right"></i> Versión 1: Valores fijos <span style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 50px; margin-left: 10px;">🔒 Internos</span>
+                <span style="margin: 0 15px;">|</span>
+                <i class="fas fa-arrow-right"></i> Versión 2: Valores dinámicos <span style="background: rgba(245,158,11,0.3); padding: 5px 15px; border-radius: 50px; margin-left: 10px;">📥 Desde URL</span>
+            </p>
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="content">
+            
+            <!-- ============= EJEMPLO VIDA REAL ============= -->
+            <div class="real-world">
+                <div class="real-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="real-content">
+                    <h3><i class="fas fa-star" style="color: #f59e0b;"></i> Escenario real: Sistema de facturación</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 5px;">Imagina que trabajas en <strong>Farmacias Cruz Verde</strong> y necesitas:</p>
+                    <div style="display: flex; gap: 20px; margin-top: 15px; flex-wrap: wrap;">
+                        <span style="background: #1e293b; color: white; padding: 8px 20px; border-radius: 50px;"><i class="fas fa-tag"></i> Sumar productos al carrito</span>
+                        <span style="background: #1e293b; color: white; padding: 8px 20px; border-radius: 50px;"><i class="fas fa-tag"></i> Restar descuentos</span>
+                        <span style="background: #1e293b; color: white; padding: 8px 20px; border-radius: 50px;"><i class="fas fa-tag"></i> Multiplicar cantidad × precio</span>
+                        <span style="background: #1e293b; color: white; padding: 8px 20px; border-radius: 50px;"><i class="fas fa-tag"></i> Dividir en cuotas</span>
+                    </div>
+                    <p style="margin-top: 20px; font-style: italic; color: #92400e;">
+                        <i class="fas fa-lightbulb"></i> Hoy harás tu propia calculadora que usan miles de aplicaciones.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ============= VERSIÓN 1: VALORES FIJOS INTERNOS ============= -->
+            <div class="card">
+                <div class="card-title" style="border-bottom-color: #4299e1;">
+                    <i class="fas fa-lock" style="color: #4299e1;"></i> 
+                    VERSIÓN 1: Valores fijos (Hardcodeados)
+                </div>
+                
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">
+                    <span class="highlight">🎯 Objetivo:</span> Crear endpoints que siempre devuelvan el mismo resultado.
+                    <br><span style="color: #64748b;">Los números están escritos directamente en el código.</span>
+                </p>
+
+                <!-- Las 4 operaciones - V1 -->
+                <div class="operations-grid">
+                    <div class="operation-card op-suma">
+                        <div class="op-icon"><i class="fas fa-plus-circle"></i></div>
+                        <div class="op-title">SUMA</div>
+                        <div style="font-size: 2rem; font-weight: 800; margin: 10px 0;">5 + 3</div>
+                        <div style="font-size: 1.5rem; color: #4299e1; font-weight: 700;">= 8</div>
+                        <div class="op-example">
+                            <code>GET /api/suma</code>
+                        </div>
+                    </div>
+
+                    <div class="operation-card op-resta">
+                        <div class="op-icon"><i class="fas fa-minus-circle"></i></div>
+                        <div class="op-title">RESTA</div>
+                        <div style="font-size: 2rem; font-weight: 800; margin: 10px 0;">10 - 4</div>
+                        <div style="font-size: 1.5rem; color: #ed8936; font-weight: 700;">= 6</div>
+                        <div class="op-example">
+                            <code>GET /api/resta</code>
+                        </div>
+                    </div>
+
+                    <div class="operation-card op-multi">
+                        <div class="op-icon"><i class="fas fa-times-circle"></i></div>
+                        <div class="op-title">MULTIPLICACIÓN</div>
+                        <div style="font-size: 2rem; font-weight: 800; margin: 10px 0;">6 × 7</div>
+                        <div style="font-size: 1.5rem; color: #9f7aea; font-weight: 700;">= 42</div>
+                        <div class="op-example">
+                            <code>GET /api/multiplicacion</code>
+                        </div>
+                    </div>
+
+                    <div class="operation-card op-div">
+                        <div class="op-icon"><i class="fas fa-divide-circle"></i></div>
+                        <div class="op-title">DIVISIÓN</div>
+                        <div style="font-size: 2rem; font-weight: 800; margin: 10px 0;">20 ÷ 5</div>
+                        <div style="font-size: 1.5rem; color: #48bb78; font-weight: 700;">= 4</div>
+                        <div class="op-example">
+                            <code>GET /api/division</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO VERSIÓN 1 -->
+                <h3 style="margin: 30px 0 15px 0; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-code"></i> Código: Calculadora V1
+                </h3>
+                
+                <div class="code-block v1">
+                    <div class="code-line"><span class="annotation">@RestController</span></div>
+                    <div class="code-line"><span class="annotation">@RequestMapping</span>(<span class="string">"/api"</span>)</div>
+                    <div class="code-line"><span class="comment">// 🔒 VERSIÓN 1: VALORES FIJOS (siempre el mismo resultado)</span></div>
+                    <div class="code-line">public class CalculadoraV1Controller {</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/suma"</span>)</div>
+                    <div class="code-line">    public String sumar() {</div>
+                    <div class="code-line">        <span class="comment">// Valores fijos escritos directamente</span></div>
+                    <div class="code-line">        int resultado = <span class="number">5</span> + <span class="number">3</span>;</div>
+                    <div class="code-line">        return <span class="string">"La suma de 5 + 3 es: "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/resta"</span>)</div>
+                    <div class="code-line">    public String restar() {</div>
+                    <div class="code-line">        int resultado = <span class="number">10</span> - <span class="number">4</span>;</div>
+                    <div class="code-line">        return <span class="string">"La resta de 10 - 4 es: "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/multiplicacion"</span>)</div>
+                    <div class="code-line">    public String multiplicar() {</div>
+                    <div class="code-line">        int resultado = <span class="number">6</span> * <span class="number">7</span>;</div>
+                    <div class="code-line">        return <span class="string">"La multiplicación de 6 × 7 es: "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/division"</span>)</div>
+                    <div class="code-line">    public String dividir() {</div>
+                    <div class="code-line">        int resultado = <span class="number">20</span> / <span class="number">5</span>;</div>
+                    <div class="code-line">        return <span class="string">"La división de 20 ÷ 5 es: "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">}</div>
+                </div>
+
+                <!-- PRUEBAS EN POSTMAN - V1 -->
+                <div style="background: #f1f5f9; padding: 20px; border-radius: 16px; margin-top: 20px;">
+                    <h4 style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <i class="fas fa-paper-plane" style="color: #4299e1;"></i> 
+                        Probar en el navegador o Postman:
+                    </h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                        <div style="background: white; padding: 12px 20px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                            <code style="font-size: 1rem;">http://localhost:8080/api/suma</code>
+                            <span style="background: #4299e1; color: white; padding: 3px 12px; border-radius: 50px; margin-left: 10px; font-size: 0.8rem;">GET</span>
+                        </div>
+                        <div style="background: white; padding: 12px 20px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                            <code style="font-size: 1rem;">http://localhost:8080/api/resta</code>
+                            <span style="background: #ed8936; color: white; padding: 3px 12px; border-radius: 50px; margin-left: 10px; font-size: 0.8rem;">GET</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; color: #475569;">
+                        <i class="fas fa-info-circle"></i> <strong>Siempre da el mismo resultado.</strong> Útil para pruebas, ¡pero no es una calculadora de verdad!
+                    </p>
+                </div>
+            </div>
+
+            <!-- ============= VERSIÓN 2: VALORES DINÁMICOS DESDE URL ============= -->
+            <div class="card">
+                <div class="card-title" style="border-bottom-color: #f59e0b;">
+                    <i class="fas fa-link" style="color: #f59e0b;"></i> 
+                    VERSIÓN 2: Valores dinámicos desde la URL
+                </div>
+                
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">
+                    <span class="highlight">🎯 Objetivo:</span> Los números los ingresa el usuario en la URL.
+                    <br><span style="color: #64748b;">Usamos <strong style="background: #fef3c7; padding: 3px 10px;">@{ }</strong> y <strong style="background: #fef3c7; padding: 3px 10px;">@PathVariable</strong>.</span>
+                </p>
+
+                <!-- Las 4 operaciones - V2 -->
+                <div class="operations-grid">
+                    <div class="operation-card op-suma">
+                        <div class="op-icon"><i class="fas fa-plus-circle"></i></div>
+                        <div class="op-title">SUMA</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; margin: 15px 0; background: #ebf8ff; padding: 10px; border-radius: 12px;">
+                            <code>/api/suma/{a}/{b}</code>
+                        </div>
+                        <div style="font-size: 1.1rem; color: #2c5282;">
+                            Ejemplo: /api/suma/15/7
+                        </div>
+                        <div style="margin-top: 10px; font-weight: 700; color: #4299e1;">
+                            → 15 + 7 = 22
+                        </div>
+                    </div>
+
+                    <div class="operation-card op-resta">
+                        <div class="op-icon"><i class="fas fa-minus-circle"></i></div>
+                        <div class="op-title">RESTA</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; margin: 15px 0; background: #fffaf0; padding: 10px; border-radius: 12px;">
+                            <code>/api/resta/{a}/{b}</code>
+                        </div>
+                        <div style="font-size: 1.1rem; color: #7b341e;">
+                            Ejemplo: /api/resta/100/33
+                        </div>
+                        <div style="margin-top: 10px; font-weight: 700; color: #ed8936;">
+                            → 100 - 33 = 67
+                        </div>
+                    </div>
+
+                    <div class="operation-card op-multi">
+                        <div class="op-icon"><i class="fas fa-times-circle"></i></div>
+                        <div class="op-title">MULTIPLICACIÓN</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; margin: 15px 0; background: #f5f0ff; padding: 10px; border-radius: 12px;">
+                            <code>/api/multiplicacion/{a}/{b}</code>
+                        </div>
+                        <div style="font-size: 1.1rem; color: #553c9a;">
+                            Ejemplo: /api/multiplicacion/8/9
+                        </div>
+                        <div style="margin-top: 10px; font-weight: 700; color: #9f7aea;">
+                            → 8 × 9 = 72
+                        </div>
+                    </div>
+
+                    <div class="operation-card op-div">
+                        <div class="op-icon"><i class="fas fa-divide-circle"></i></div>
+                        <div class="op-title">DIVISIÓN</div>
+                        <div style="font-size: 1.3rem; font-weight: 600; margin: 15px 0; background: #f0fff4; padding: 10px; border-radius: 12px;">
+                            <code>/api/division/{a}/{b}</code>
+                        </div>
+                        <div style="font-size: 1.1rem; color: #22543d;">
+                            Ejemplo: /api/division/50/2
+                        </div>
+                        <div style="margin-top: 10px; font-weight: 700; color: #48bb78;">
+                            → 50 ÷ 2 = 25
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CÓDIGO VERSIÓN 2 CON @PathVariable -->
+                <h3 style="margin: 30px 0 15px 0; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-code"></i> Código: Calculadora V2 (con @PathVariable)
+                </h3>
+
+                <div class="code-block v2">
+                    <div class="code-line"><span class="annotation">@RestController</span></div>
+                    <div class="code-line"><span class="annotation">@RequestMapping</span>(<span class="string">"/api"</span>)</div>
+                    <div class="code-line"><span class="comment">// 📥 VERSIÓN 2: VALORES DINÁMICOS DESDE LA URL</span></div>
+                    <div class="code-line">public class CalculadoraV2Controller {</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="comment">// GET /api/suma/5/3  →  "5 + 3 = 8"</span></div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/suma/{valor1}/{valor2}"</span>)</div>
+                    <div class="code-line">    public String sumar(</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor1,</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor2) {</div>
+                    <div class="code-line">        int resultado = valor1 + valor2;</div>
+                    <div class="code-line">        return valor1 + <span class="string">" + "</span> + valor2 + <span class="string">" = "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="comment">// GET /api/resta/10/4  →  "10 - 4 = 6"</span></div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/resta/{valor1}/{valor2}"</span>)</div>
+                    <div class="code-line">    public String restar(</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor1,</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor2) {</div>
+                    <div class="code-line">        int resultado = valor1 - valor2;</div>
+                    <div class="code-line">        return valor1 + <span class="string">" - "</span> + valor2 + <span class="string">" = "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="comment">// GET /api/multiplicacion/6/7  →  "6 × 7 = 42"</span></div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/multiplicacion/{valor1}/{valor2}"</span>)</div>
+                    <div class="code-line">    public String multiplicar(</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor1,</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor2) {</div>
+                    <div class="code-line">        int resultado = valor1 * valor2;</div>
+                    <div class="code-line">        return valor1 + <span class="string">" × "</span> + valor2 + <span class="string">" = "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">    </div>
+                    <div class="code-line">    <span class="comment">// GET /api/division/20/5  →  "20 ÷ 5 = 4"</span></div>
+                    <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/division/{valor1}/{valor2}"</span>)</div>
+                    <div class="code-line">    public String dividir(</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor1,</div>
+                    <div class="code-line">            <span class="annotation">@PathVariable</span> int valor2) {</div>
+                    <div class="code-line">        <span class="comment">// Validación: No dividir por cero</span></div>
+                    <div class="code-line">        <span class="keyword">if</span> (valor2 == <span class="number">0</span>) {</div>
+                    <div class="code-line">            return <span class="string">"❌ Error: No se puede dividir por cero"</span>;</div>
+                    <div class="code-line">        }</div>
+                    <div class="code-line">        int resultado = valor1 / valor2;</div>
+                    <div class="code-line">        return valor1 + <span class="string">" ÷ "</span> + valor2 + <span class="string">" = "</span> + resultado;</div>
+                    <div class="code-line">    }</div>
+                    <div class="code-line">}</div>
+                </div>
+
+                <!-- TABLA COMPARATIVA ENDPOINTS -->
+                <h3 style="margin: 40px 0 20px 0;">📋 Comparación: V1 vs V2</h3>
+                
+                <table class="endpoint-table">
+                    <tr>
+                        <th>Operación</th>
+                        <th>V1 (Fijo)</th>
+                        <th>V2 (Dinámico)</th>
+                        <th>Ejemplo V2</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Suma</strong></td>
+                        <td><code>/api/suma</code> → 5+3=8</td>
+                        <td><code>/api/suma/{a}/{b}</code></td>
+                        <td><code>/api/suma/100/50</code> → 150</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resta</strong></td>
+                        <td><code>/api/resta</code> → 10-4=6</td>
+                        <td><code>/api/resta/{a}/{b}</code></td>
+                        <td><code>/api/resta/100/50</code> → 50</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multiplicación</strong></td>
+                        <td><code>/api/multiplicacion</code> → 6×7=42</td>
+                        <td><code>/api/multiplicacion/{a}/{b}</code></td>
+                        <td><code>/api/multiplicacion/10/5</code> → 50</td>
+                    </tr>
+                    <tr>
+                        <td><strong>División</strong></td>
+                        <td><code>/api/division</code> → 20÷5=4</td>
+                        <td><code>/api/division/{a}/{b}</code></td>
+                        <td><code>/api/division/100/4</code> → 25</td>
+                    </tr>
+                </table>
+
+                <!-- EXPLICACIÓN @PathVariable -->
+                <div style="background: #fef3c7; border-radius: 20px; padding: 25px; margin-top: 30px;">
+                    <h4 style="display: flex; align-items: center; gap: 10px; color: #92400e; margin-bottom: 15px;">
+                        <i class="fas fa-info-circle"></i> 
+                        ¿Qué es @PathVariable?
+                    </h4>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 25px;">
+                        <div style="font-size: 3rem;">🔖</div>
+                        <div style="flex: 1;">
+                            <p style="font-size: 1.2rem; margin-bottom: 10px;"><strong>@PathVariable</strong> extrae valores desde la URL.</p>
+                            <div style="background: white; padding: 15px; border-radius: 12px; font-family: monospace;">
+                                <span style="background: #f59e0b; color: black; padding: 5px 15px; border-radius: 50px; font-weight: bold;">URL:</span> /api/suma/15/7<br>
+                                <span style="background: #4299e1; color: white; padding: 5px 15px; border-radius: 50px; margin-top: 10px; display: inline-block;">@PathVariable int valor1</span> → 15<br>
+                                <span style="background: #4299e1; color: white; padding: 5px 15px; border-radius: 50px; margin-top: 5px; display: inline-block;">@PathVariable int valor2</span> → 7
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============= COMPARACIÓN DIRECTA V1 vs V2 ============= -->
+            <div class="version-comparator">
+                <div class="version-box v1-box">
+                    <span class="version-badge">VERSIÓN 1 - FIJA</span>
+                    <div class="version-title">
+                        <i class="fas fa-lock" style="color: #4299e1;"></i> Hardcodeada
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #4299e1; color: white; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">1</span>
+                            <strong>Números fijos:</strong> 5+3, 10-4, etc.
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #4299e1; color: white; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">2</span>
+                            <strong>Siempre mismo resultado:</strong> No cambia
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #4299e1; color: white; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">3</span>
+                            <strong>Útil para:</strong> Pruebas iniciales
+                        </li>
+                    </ul>
+                    <div style="background: #ebf8ff; padding: 15px; border-radius: 12px; font-size: 0.95rem;">
+                        <i class="fas fa-exclamation-triangle" style="color: #2b6cb0;"></i> 
+                        No sirve como calculadora real. Es estática.
+                    </div>
+                </div>
+
+                <div class="version-box v2-box">
+                    <span class="version-badge v2-badge">VERSIÓN 2 - DINÁMICA</span>
+                    <div class="version-title">
+                        <i class="fas fa-link" style="color: #f59e0b;"></i> @PathVariable
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #f59e0b; color: black; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">1</span>
+                            <strong>Números variables:</strong> Usuario elige
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #f59e0b; color: black; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">2</span>
+                            <strong>Resultado dinámico:</strong> Cambia según URL
+                        </li>
+                        <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span style="background: #f59e0b; color: black; width: 25px; height: 25px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">3</span>
+                            <strong>Útil para:</strong> APIs reales, apps en producción
+                        </li>
+                    </ul>
+                    <div style="background: #fef3c7; padding: 15px; border-radius: 12px; font-size: 0.95rem;">
+                        <i class="fas fa-check-circle" style="color: #f59e0b;"></i> 
+                        ¡Esto SÍ es una calculadora funcional!
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============= EJEMPLOS DE PRUEBA ============= -->
+            <div style="background: #f8fafc; padding: 30px; border-radius: 24px; margin: 40px 0;">
+                <h3 style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px; color: #0f172a;">
+                    <i class="fas fa-flask"></i> Prueba tú mismo - Ejemplos reales
+                </h3>
+                
+                <div class="grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                    <div style="background: white; padding: 20px; border-radius: 16px; border-left: 8px solid #4299e1;">
+                        <h4 style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <i class="fas fa-plus-circle" style="color: #4299e1;"></i> Suma
+                        </h4>
+                        <p><code>GET /api/suma/123/456</code></p>
+                        <p style="background: #f1f5f9; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                            <strong>Respuesta:</strong> "123 + 456 = 579"
+                        </p>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 16px; border-left: 8px solid #ed8936;">
+                        <h4 style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <i class="fas fa-minus-circle" style="color: #ed8936;"></i> Resta
+                        </h4>
+                        <p><code>GET /api/resta/1000/250</code></p>
+                        <p style="background: #f1f5f9; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                            <strong>Respuesta:</strong> "1000 - 250 = 750"
+                        </p>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 16px; border-left: 8px solid #9f7aea;">
+                        <h4 style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <i class="fas fa-times-circle" style="color: #9f7aea;"></i> Multiplicación
+                        </h4>
+                        <p><code>GET /api/multiplicacion/25/4</code></p>
+                        <p style="background: #f1f5f9; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                            <strong>Respuesta:</strong> "25 × 4 = 100"
+                        </p>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 16px; border-left: 8px solid #48bb78;">
+                        <h4 style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                            <i class="fas fa-divide-circle" style="color: #48bb78;"></i> División
+                        </h4>
+                        <p><code>GET /api/division/99/3</code></p>
+                        <p style="background: #f1f5f9; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                            <strong>Respuesta:</strong> "99 ÷ 3 = 33"
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 25px; background: #fee2e2; padding: 15px; border-radius: 12px; border-left: 8px solid #dc2626;">
+                    <h4 style="color: #b91c1c; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-exclamation-triangle"></i> Caso especial: División por cero
+                    </h4>
+                    <p><code>GET /api/division/10/0</code></p>
+                    <p style="margin-top: 5px;"><strong>Respuesta:</strong> "❌ Error: No se puede dividir por cero"</p>
+                </div>
+            </div>
+
+            <!-- ============= DESAFÍO PARA ESTUDIANTES ============= -->
+            <div class="challenge-box">
+                <h3><i class="fas fa-code-branch"></i> 🚀 Desafío: Mejora tu Calculadora API</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 25px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 16px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🔢</div>
+                        <h4 style="color: #f59e0b;">Números decimales</h4>
+                        <p style="color: #e2e8f0;">Cambia de int a double y permite decimales: /api/suma/5.5/2.3</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 16px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📊</div>
+                        <h4 style="color: #f59e0b;">Potencia</h4>
+                        <p style="color: #e2e8f0;">Agrega un endpoint /api/potencia/{base}/{exponente}</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 16px;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🧮</div>
+                        <h4 style="color: #f59e0b;">Raíz cuadrada</h4>
+                        <p style="color: #e2e8f0;">Crea /api/raiz/{numero} usando Math.sqrt()</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============= RESUMEN FINAL ============= -->
+            <div style="background: linear-gradient(145deg, #0f172a, #1e293b); padding: 35px; border-radius: 24px; margin-top: 40px; color: white;">
+                <h2 style="color: white; display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <i class="fas fa-clipboard-check" style="color: #f59e0b;"></i> 
+                    Lo que aprendiste hoy
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 20px;">
+                    <div style="text-align: center;">
+                        <div style="background: #f59e0b; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                            <i class="fas fa-check" style="color: black; font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 style="color: white;">V1: Fija</h4>
+                        <p style="color: #cbd5e0; font-size: 0.9rem;">Endpoints con valores hardcodeados</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #f59e0b; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                            <i class="fas fa-check" style="color: black; font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 style="color: white;">V2: Dinámica</h4>
+                        <p style="color: #cbd5e0; font-size: 0.9rem;">@PathVariable desde URL</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #f59e0b; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                            <i class="fas fa-check" style="color: black; font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 style="color: white;">4 operaciones</h4>
+                        <p style="color: #cbd5e0; font-size: 0.9rem;">Suma, resta, multi, división</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: #f59e0b; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                            <i class="fas fa-check" style="color: black; font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 style="color: white;">Validación</h4>
+                        <p style="color: #cbd5e0; font-size: 0.9rem;">División por cero controlada</p>
+                    </div>
+                </div>
+
+                <hr style="background: #4b5563; margin: 30px 0; border: none; height: 2px;">
+
+                <p style="text-align: center; font-size: 1.2rem;">
+                    <i class="fas fa-arrow-right" style="color: #f59e0b;"></i> 
+                    <strong>Próximo paso:</strong> Cambia los valores fijos de V1 por variables desde @RequestParam
+                    <br>
+                    <span style="color: #94a3b8;">Ejemplo: /api/suma?valor1=5&valor2=3</span>
+                </p>
+            </div>
+
+        </div><!-- FIN CONTENT -->
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div style="font-size: 3rem; margin-bottom: 15px;">
+                <i class="fas fa-calculator"></i> + <i class="fas fa-leaf" style="color: #6db33f;"></i>
+            </div>
+            <h3 style="color: white; margin-bottom: 15px; font-size: 1.8rem;">Calculadora API - Spring Boot</h3>
+            <p style="max-width: 700px; margin: 0 auto; color: #cbd5e0; font-size: 1.1rem;">
+                V1: Valores fijos internos · V2: Valores dinámicos desde URL con @PathVariable
+            </p>
+            <p style="margin-top: 30px; color: #94a3b8;">
+                <i class="fas fa-code"></i> Actividad para estudiantes · Desarrollo de APIs REST
+            </p>
+            <p style="margin-top: 20px; color: #f59e0b;">
+                <i class="fas fa-star"></i> "De valores fijos a parámetros dinámicos: así evoluciona una API"
+            </p>
+        </div>
+    </div>
+</body>
+</html>
