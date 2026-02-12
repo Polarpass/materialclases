@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Infografía: Introducción a Git</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🌿 Git: Introducción y Comandos Básicos</h1>
+
+    <div class="nota">
+      <h3>🔰 Introducción</h3>
+      <p>
+        <strong>Git</strong> es un sistema de control de versiones distribuido que permite a los desarrolladores gestionar y realizar un seguimiento de los cambios en el código fuente durante el desarrollo de software.  
+        Fue creado por <strong>Linus Torvalds</strong> en 2005 para el desarrollo del kernel de Linux. Hoy en día es la herramienta más popular para este fin.
+      </p>
+    </div>
+
+    <h2>🛠️ ¿Qué hace Git?</h2>
+    <ul>
+      <li><strong>Control de versiones:</strong> Guarda un historial completo de los cambios, permitiendo recuperar cualquier versión anterior.</li>
+      <li><strong>Trabajo en equipo:</strong> Facilita el trabajo colaborativo sin que los desarrolladores interfieran entre sí.</li>
+      <li><strong>Distribuido:</strong> Cada desarrollador tiene una copia completa del repositorio, lo que permite trabajar sin conexión.</li>
+    </ul>
+
+    <h2>🔑 Conceptos clave</h2>
+    <ul>
+      <li><strong>Repositorio (Repository):</strong> Almacén del historial de cambios. Puede ser local o remoto.</li>
+      <li><strong>Commit:</strong> Una "foto" del estado del proyecto con un mensaje que describe los cambios.</li>
+      <li><strong>Branch (Rama):</strong> Permite trabajar en distintas versiones del proyecto de forma paralela.</li>
+      <li><strong>Merge:</strong> Fusiona los cambios de distintas ramas en una sola.</li>
+      <li><strong>Push y Pull:</strong> <code>git push</code> sube tus cambios al repositorio remoto. <code>git pull</code> descarga los cambios de otros colaboradores.</li>
+    </ul>
+
+    <h2>🧹 Eliminar la información de Git en un proyecto</h2>
+    <pre><code>rm -rf .git</code></pre>
+
+    <h2>⚙️ Configuración inicial (una sola vez)</h2>
+    <pre><code>git config --global user.name "Tu Nombre"
+git config --global user.email "tuemail@example.com"</code></pre>
+
+    <h2>📦 Comandos básicos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Comando</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>git init</code></td>
+          <td>Inicia un nuevo repositorio Git en la carpeta actual.</td>
+        </tr>
+        <tr>
+          <td><code>git add .</code></td>
+          <td>Agrega todos los archivos al área de preparación.</td>
+        </tr>
+        <tr>
+          <td><code>git add index.html</code></td>
+          <td>Agrega un archivo específico al área de preparación.</td>
+        </tr>
+        <tr>
+          <td><code>git commit -m "Mensaje descriptivo"</code></td>
+          <td>Guarda los cambios preparados con un mensaje claro.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <h3>💡 Tip para estudiantes:</h3>
+      <p>
+        Siempre usa mensajes de commit descriptivos y claros, como <code>"Corrige validación de formulario"</code> o <code>"Agrega sección de contacto"</code>.  
+        Te ayudará a entender qué hiciste al revisar tu historial más adelante.
+      </p>
+    </div>
+
+    <h2>📋 Control de versiones – Estados de archivos</h2>
+    <p>
+      Cuando ejecutas <code>git status</code>, Git te muestra el estado actual de los archivos del proyecto. Aquí están los símbolos más comunes y su significado:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Símbolo</th>
+          <th>Significado</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>U</strong></td><td><em>Untracked</em></td><td>No rastreado por Git. Aún no se ha agregado con <code>git add</code>.</td></tr>
+        <tr><td><strong>A</strong></td><td><em>Added</em></td><td>Agregado al área de preparación (staging), aún no commit.</td></tr>
+        <tr><td><strong>M</strong></td><td><em>Modified</em></td><td>Modificado, pero no preparado aún.</td></tr>
+        <tr><td><strong>D</strong></td><td><em>Deleted</em></td><td>Eliminado del proyecto.</td></tr>
+        <tr><td><strong>R</strong></td><td><em>Renamed</em></td><td>Renombrado y detectado por Git.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <h3>💡 Consejo útil:</h3>
+      <p>
+        Usa <code>git status</code> frecuentemente para saber qué archivos han cambiado, cuáles están listos para commit y cuáles aún no han sido agregados.
+      </p>
+    </div>
+
+    <h2>🧹 Eliminar ramas antiguas</h2>
+    <p>
+      Es buena práctica eliminar ramas una vez fusionadas con <code>main</code> o <code>master</code> para mantener el repositorio limpio.
+    </p>
+    <pre><code>git branch -d nombre-de-la-rama
+# Forzar:
+git branch -D nombre-de-la-rama
+# Limpiar referencias:
+git fetch --prune</code></pre>
+
+    <h2>🗂️ Convenciones para nombrar ramas</h2>
+    <table>
+      <thead><tr><th>Tipo</th><th>Formato</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>Funcionalidades</td><td><code>feature/...</code></td><td><code>feature/login</code></td></tr>
+        <tr><td>Correcciones</td><td><code>bugfix/...</code></td><td><code>bugfix/fix-login</code></td></tr>
+        <tr><td>Mejoras</td><td><code>enhancement/...</code></td><td><code>enhancement/ui</code></td></tr>
+        <tr><td>Hotfix</td><td><code>hotfix/...</code></td><td><code>hotfix/urgente</code></td></tr>
+        <tr><td>Desarrollo</td><td><code>dev/...</code></td><td><code>dev/pruebas</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>✅ Recomendaciones</h3>
+    <ul>
+      <li>Usa nombres claros y descriptivos.</li>
+      <li>No uses espacios, usa <code>-</code> o <code>/</code>.</li>
+      <li>Evita nombres excesivamente largos.</li>
+    </ul>
+
+    <h2>🔗 Descargar Git</h2>
+    <p>Git está disponible en su sitio oficial: <a href="https://git-scm.com" target="_blank">https://git-scm.com</a></p>
+    <ul>
+      <li><strong>Windows:</strong> Instalador automático.</li>
+      <li><strong>Linux:</strong> <code>sudo apt install git</code></li>
+      <li><strong>macOS:</strong> <code>brew install git</code></li>
+    </ul>
+
+    <h2>🛃 Flujo básico con ramas</h2>
+    <table>
+      <thead><tr><th>Paso</th><th>Acción</th><th>Comando</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Crear rama</td><td><code>git checkout -b feature/nueva</code></td></tr>
+        <tr><td>2</td><td>Hacer cambios</td><td><code>git add .</code><br><code>git commit -m "Cambios"</code></td></tr>
+        <tr><td>3</td><td>Volver a main</td><td><code>git checkout main</code></td></tr>
+        <tr><td>4</td><td>Fusionar</td><td><code>git merge feature/nueva</code></td></tr>
+        <tr><td>5</td><td>Eliminar rama</td><td><code>git branch -d feature/nueva</code></td></tr>
+        <tr><td>6</td><td>Subir cambios</td><td><code>git push origin main</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <h3>📊 Consejo final:</h3>
+      <p>Usa ramas para organizar tu trabajo, elimina ramas antiguas y colabora usando flujos claros y convenciones de nombres consistentes.</p>
+    </div>
+  </div>
+</body>
+</html>

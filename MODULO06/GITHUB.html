@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Infografía: Conexión Remota con Git</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 Conexión Remota con Git</h1>
+
+    <div class="nota">
+      <h3>¿Qué es un repositorio remoto?</h3>
+      <p>
+        Un <strong>repositorio remoto</strong> es una copia de tu proyecto almacenada en un servidor externo (como GitHub, GitLab o Azure DevOps).  
+        Te permite colaborar, sincronizar y respaldar tu código de forma segura desde cualquier lugar.
+      </p>
+    </div>
+
+    <h2>🌐 Enlazar tu proyecto local a un repositorio remoto</h2>
+    <p>Primero debes agregar la dirección del repositorio remoto. Esto se hace una sola vez por proyecto:</p>
+
+    <pre><code>git remote add origin https://usuario123@dev.azure.com/usuario123/MiProyecto/_git/MiProyecto</code></pre>
+
+    <ul>
+      <li><code>origin</code>: es el nombre que damos al repositorio remoto.</li>
+      <li>La URL contiene la dirección de tu proyecto en Azure DevOps (o GitHub).</li>
+    </ul>
+
+    <h2>📤 Subir tus cambios al repositorio</h2>
+
+    <pre><code>git push -u origin master</code></pre>
+    <p>Este comando sube tu rama <code>master</code> al repositorio remoto y la vincula como predeterminada.</p>
+
+    <pre><code>git push</code></pre>
+    <p>Después del primer <code>push -u</code>, puedes seguir subiendo cambios con solo usar <code>git push</code>.</p>
+
+    <h2>📥 Clonar un repositorio existente</h2>
+    <p>Si el repositorio ya existe, puedes clonar todo su contenido a tu equipo local con:</p>
+
+    <pre><code>git clone https://usuario123@dev.azure.com/usuario123/MiProyecto/_git/MiProyecto</code></pre>
+
+    <ul>
+      <li>Esto descarga todos los archivos, historial de commits y ramas.</li>
+      <li>Útil si estás comenzando a trabajar en un proyecto compartido.</li>
+    </ul>
+
+    <h2>🧭 Flujo básico de trabajo con repositorio remoto</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Paso</th>
+          <th>Acción</th>
+          <th>Comando</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Crear repositorio remoto (Azure/GitHub)</td><td>—</td></tr>
+        <tr><td>2</td><td>Conectar repositorio local</td><td><code>git remote add origin ...</code></td></tr>
+        <tr><td>3</td><td>Subir primera vez</td><td><code>git push -u origin master</code></td></tr>
+        <tr><td>4</td><td>Subir cambios futuros</td><td><code>git push</code></td></tr>
+        <tr><td>5</td><td>Clonar desde otra máquina</td><td><code>git clone ...</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <h3>💡 Recomendaciones:</h3>
+      <ul>
+        <li>Asegúrate de tener permisos de lectura/escritura en el repositorio remoto.</li>
+        <li>En Azure DevOps, puedes usar token de acceso personal (PAT) para autenticarte si se requiere.</li>
+        <li>Verifica que la URL sea correcta y esté vinculada al proyecto correcto.</li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>
