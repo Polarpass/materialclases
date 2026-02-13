@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: MVC vs CSR en Spring Boot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 20px;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            border-bottom: 8px solid #6db33f;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .header h1 i {
+            color: #6db33f;
+            margin-right: 15px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .spring-badge {
+            background: #6db33f;
+            color: white;
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px -5px rgba(109,179,63,0.3);
+        }
+
+        /* CONTENIDO */
+        .content {
+            padding: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 30px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* TARJETAS DE COMPARACIÓN */
+        .comparacion-principal {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 992px) {
+            .comparacion-principal {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mvc-card, .csr-card {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+            border: 3px solid;
+            transition: transform 0.3s;
+        }
+
+        .mvc-card:hover, .csr-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .mvc-card {
+            border-color: #4299e1;
+            background: linear-gradient(145deg, white, #ebf8ff);
+        }
+
+        .csr-card {
+            border-color: #6db33f;
+            background: linear-gradient(145deg, white, #f0fff4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            border-bottom: 3px solid;
+            padding-bottom: 20px;
+        }
+
+        .mvc-card .card-header {
+            border-bottom-color: #4299e1;
+        }
+
+        .csr-card .card-header {
+            border-bottom-color: #6db33f;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -5px rgba(0,0,0,0.1);
+        }
+
+        .mvc-icon {
+            color: #4299e1;
+        }
+
+        .csr-icon {
+            color: #6db33f;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        /* DIAGRAMAS VISUALES */
+        .diagrama {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .diagrama-mvc {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .mvc-box {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 140px;
+            border: 3px solid;
+            box-shadow: 0 8px 15px -5px rgba(0,0,0,0.1);
+        }
+
+        .box-model { border-color: #fbbf24; }
+        .box-view { border-color: #60a5fa; }
+        .box-controller { border-color: #f59e0b; }
+
+        .diagrama-csr {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .csr-box {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            min-width: 140px;
+            border: 3px solid;
+            box-shadow: 0 8px 15px -5px rgba(0,0,0,0.1);
+        }
+
+        .box-controller-csr { border-color: #6db33f; }
+        .box-service { border-color: #9f7aea; }
+        .box-repository { border-color: #f87171; }
+
+        .arrow {
+            font-size: 2rem;
+            color: #a0aec0;
+        }
+
+        /* EJEMPLOS VIDA REAL */
+        .real-example {
+            background: #f7fafc;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 10px solid;
+        }
+
+        .mvc-example {
+            border-left-color: #4299e1;
+        }
+
+        .csr-example {
+            border-left-color: #6db33f;
+        }
+
+        .real-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            float: left;
+        }
+
+        /* TABLA COMPARATIVA */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #1a202c;
+            color: white;
+            padding: 18px;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 18px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover td {
+            background: #f7fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-mvc {
+            background: #4299e1;
+            color: white;
+        }
+
+        .badge-csr {
+            background: #6db33f;
+            color: white;
+        }
+
+        /* CÓDIGO */
+        .code-block {
+            background: #1e1e3f;
+            border-radius: 20px;
+            padding: 25px;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin: 20px 0;
+            overflow-x: auto;
+            border-left: 8px solid;
+        }
+
+        .code-mvc {
+            border-left-color: #4299e1;
+        }
+
+        .code-csr {
+            border-left-color: #6db33f;
+        }
+
+        .annotation {
+            color: #ffb86b;
+        }
+
+        .string {
+            color: #6bc4a6;
+        }
+
+        .comment {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* METÁFORAS */
+        .metafora-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 768px) {
+            .metafora-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .metafora {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px -5px rgba(0,0,0,0.05);
+            border: 2px dashed;
+        }
+
+        .metafora-mvc {
+            border-color: #4299e1;
+        }
+
+        .metafora-csr {
+            border-color: #6db33f;
+        }
+
+        .metafora-icon {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-top: 8px solid #6db33f;
+        }
+
+        .conclusion {
+            background: #6db33f;
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 40px;
+            font-size: 1.2rem;
+        }
+
+        hr {
+            margin: 40px 0;
+            border: none;
+            border-top: 3px dashed #cbd5e0;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 3px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-code-branch"></i> MVC vs CSR
+            </h1>
+            <p>Dos formas de organizar tu aplicación Spring Boot</p>
+            <div class="spring-badge">
+                <i class="fas fa-leaf"></i> Spring Framework
+            </div>
+        </div>
+
+        <!-- CONTENIDO -->
+        <div class="content">
+            
+            <!-- INTRO - ¿DE QUÉ HABLAMOS? -->
+            <div style="background: #f8fafc; padding: 30px; border-radius: 20px; margin-bottom: 40px; border-left: 10px solid #6db33f;">
+                <h2 style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; color: #1e293b;">
+                    <i class="fas fa-question-circle" style="color: #6db33f;"></i> 
+                    ¿Cuál es la diferencia?
+                </h2>
+                <p style="font-size: 1.2rem;">
+                    <strong>MVC (Modelo-Vista-Controlador)</strong> vs <strong>CSR (Controller-Service-Repository)</strong> son dos formas de organizar tu código. 
+                    MVC nació para páginas web con HTML. CSR nació para APIs REST y microservicios. 
+                    <span style="background: #fed7d7; padding: 3px 10px; border-radius: 20px;">¡No son enemigos!</span> CSR es una EVOLUCIÓN de MVC.
+                </p>
+            </div>
+
+            <!-- ============ COMPARACIÓN PRINCIPAL ============ -->
+            <div class="comparacion-principal">
+                
+                <!-- MVC -->
+                <div class="mvc-card">
+                    <div class="card-header">
+                        <div class="card-icon mvc-icon">
+                            <i class="fas fa-window-maximize"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">MVC</div>
+                            <div style="color: #4299e1; font-weight: 600;">Modelo - Vista - Controlador</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <span class="badge badge-mvc"><i class="fas fa-tag"></i> 1990s - Origen</span>
+                        <span class="badge badge-mvc" style="margin-left: 10px;"><i class="fas fa-file"></i> HTML, JSP</span>
+                    </div>
+
+                    <!-- DIAGRAMA MVC VISUAL -->
+                    <div class="diagrama">
+                        <div class="diagrama-mvc">
+                            <div class="mvc-box box-model">
+                                <div style="font-size: 2rem; color: #fbbf24; margin-bottom: 5px;">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <strong style="font-size: 1.2rem;">MODELO</strong>
+                                <p style="font-size: 0.85rem; margin-top: 8px;">Los datos</p>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="mvc-box box-controller">
+                                <div style="font-size: 2rem; color: #f59e0b; margin-bottom: 5px;">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <strong style="font-size: 1.2rem;">CONTROLADOR</strong>
+                                <p style="font-size: 0.85rem; margin-top: 8px;">El que decide</p>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="mvc-box box-view">
+                                <div style="font-size: 2rem; color: #60a5fa; margin-bottom: 5px;">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                                <strong style="font-size: 1.2rem;">VISTA</strong>
+                                <p style="font-size: 0.85rem; margin-top: 8px;">Lo que ves</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EJEMPLO VIDA REAL MVC -->
+                    <div class="real-example mvc-example">
+                        <div class="real-icon" style="color: #4299e1;">🏪</div>
+                        <h4 style="margin-bottom: 10px;">Ejemplo: Tienda con vitrina</h4>
+                        <p>
+                            <strong>Modelo:</strong> Los productos en la bodega 🏭<br>
+                            <strong>Vista:</strong> La vitrina donde ves los productos 🪟<br>
+                            <strong>Controlador:</strong> El vendedor que trae productos de bodega a la vitrina 🧑‍💼
+                        </p>
+                        <p style="margin-top: 10px; font-style: italic; color: #2c5282;">
+                            → El cliente VE la vitrina (Vista), el vendedor (Controlador) trae lo que pide.
+                        </p>
+                    </div>
+
+                    <!-- CÓDIGO MVC -->
+                    <h4 style="margin: 25px 0 15px 0;">📁 Código MVC tradicional:</h4>
+                    <div class="code-block code-mvc">
+                        <div class="code-line"><span class="annotation">@Controller</span>  <span class="comment">// 👔 Controlador</span></div>
+                        <div class="code-line">public class ProductoController {</div>
+                        <div class="code-line">    </div>
+                        <div class="code-line">    <span class="annotation">@GetMapping</span>(<span class="string">"/productos"</span>)</div>
+                        <div class="code-line">    public String verProductos(Model model) {</div>
+                        <div class="code-line">        List<Producto> productos = servicio.obtenerTodos();  <span class="comment">// 📦 Modelo</span></div>
+                        <div class="code-line">        model.addAttribute(<span class="string">"lista"</span>, productos);</div>
+                        <div class="code-line">        return <span class="string">"productos.html"</span>;  <span class="comment">// 🖼️ Vista (HTML)</span></div>
+                        <div class="code-line">    }</div>
+                        <div class="code-line">}</div>
+                    </div>
+
+                    <div style="background: #fed7d7; padding: 15px; border-radius: 12px; margin-top: 20px;">
+                        <i class="fas fa-exclamation-triangle" style="color: #c53030;"></i> 
+                        <strong>Ojo:</strong> MVC devuelve VISTAS (HTML). No es ideal para apps modernas que solo manejan datos.
+                    </div>
+                </div>
+                
+                <!-- CSR -->
+                <div class="csr-card">
+                    <div class="card-header">
+                        <div class="card-icon csr-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <div>
+                            <div class="card-title">CSR</div>
+                            <div style="color: #6db33f; font-weight: 600;">Controller - Service - Repository</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <span class="badge badge-csr"><i class="fas fa-tag"></i> 2010s - Microservicios</span>
+                        <span class="badge badge-csr" style="margin-left: 10px;"><i class="fas fa-code"></i> REST, JSON</span>
+                    </div>
+
+                    <!-- DIAGRAMA CSR VISUAL -->
+                    <div class="diagrama">
+                        <div class="diagrama-csr">
+                            <div class="csr-box box-controller-csr">
+                                <div style="font-size: 2rem; color: #6db33f; margin-bottom: 5px;">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <strong style="font-size: 1.2rem;">CONTROLLER</strong>
+                                <p style="font-size: 0.85rem; margin-top: 8px;">Recibe peticiones</p>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="csr-box box-service">
+                                <div style="font-size: 2rem; color: #9f7aea; margin-bottom: 5px;">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <strong style="font-size: 1.2rem;">SERVICE</strong>
+                                <p style="font-size: 0.85rem; margin-top: 8px;">Hace la lógica</p>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="csr-box box-repository">
+                                <div style="font-size: 2rem; color: #f87171; margin-bottom: 5px;">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <strong style="font-size: 1.2rem;">REPOSITORY</strong>
+                                <p style="font-size: 0.85rem; margin-top: 8px;">Habla con BD</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EJEMPLO VIDA REAL CSR -->
+                    <div class="real-example csr-example">
+                        <div class="real-icon" style="color: #6db33f;">📱</div>
+                        <h4 style="margin-bottom: 10px;">Ejemplo: App de delivery</h4>
+                        <p>
+                            <strong>Controller:</strong> El recepcionista que toma el pedido 📞<br>
+                            <strong>Service:</strong> El cocinero que prepara la comida 👨‍🍳<br>
+                            <strong>Repository:</strong> El refrigerador donde guardas ingredientes 🧊
+                        </p>
+                        <p style="margin-top: 10px; font-style: italic; color: #276749;">
+                            → El recepcionista NO cocina, solo recibe el pedido. El cocinero NO va al supermercado, usa el refrigerador.
+                        </p>
+                    </div>
+
+                    <!-- CÓDIGO CSR -->
+                    <h4 style="margin: 25px 0 15px 0;">📁 Código CSR (Spring Boot moderno):</h4>
+                    <div class="code-block code-csr">
+                        <div class="code-line"><span class="annotation">@RestController</span>  <span class="comment">// 📞 Controller</span></div>
+                        <div class="code-line"><span class="annotation">@RequestMapping</span>(<span class="string">"/api/productos"</span>)</div>
+                        <div class="code-line">public class ProductoController {</div>
+                        <div class="code-line">    </div>
+                        <div class="code-line">    <span class="annotation">@Autowired</span></div>
+                        <div class="code-line">    private ProductoService service;  <span class="comment">// 👨‍🍳 Service</span></div>
+                        <div class="code-line">    </div>
+                        <div class="code-line">    <span class="annotation">@GetMapping</span></div>
+                        <div class="code-line">    public List<Producto> listar() {</div>
+                        <div class="code-line">        return service.obtenerTodos();  <span class="comment">// Service trabaja, Controller SOLO recibe</span></div>
+                        <div class="code-line">    }</div>
+                        <div class="code-line">}</div>
+                        <div class="code-line"> </div>
+                        <div class="code-line"><span class="annotation">@Service</span>  <span class="comment">// 👨‍🍳 Service</span></div>
+                        <div class="code-line">public class ProductoService {</div>
+                        <div class="code-line">    <span class="annotation">@Autowired</span></div>
+                        <div class="code-line">    private ProductoRepository repo;  <span class="comment">// 🧊 Repository</span></div>
+                        <div class="code-line">    </div>
+                        <div class="code-line">    public List<Producto> obtenerTodos() {</div>
+                        <div class="code-line">        <span class="comment">// Lógica de negocio: filtrar, calcular, validar...</span></div>
+                        <div class="code-line">        return repo.findAll();</div>
+                        <div class="code-line">    }</div>
+                        <div class="code-line">}</div>
+                    </div>
+
+                    <div style="background: #f0fff4; padding: 15px; border-radius: 12px; margin-top: 20px; border-left: 5px solid #6db33f;">
+                        <i class="fas fa-check-circle" style="color: #6db33f;"></i> 
+                        <strong>CSR devuelve DATOS (JSON):</strong> { "id": 1, "nombre": "Laptop" }
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ METÁFORA DEL RESTAURANTE ============ -->
+            <div style="background: linear-gradient(145deg, #fef3c7, #fffbeb); padding: 40px; border-radius: 30px; margin: 40px 0;">
+                <h2 style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px; color: #92400e;">
+                    <i class="fas fa-utensils"></i> 
+                    LA METÁFORA DEL RESTAURANTE (para que nunca lo olvides)
+                </h2>
+                
+                <div class="metafora-container">
+                    <div class="metafora metafora-mvc">
+                        <div class="metafora-icon">🍽️</div>
+                        <h3 style="color: #2c5282; margin-bottom: 15px;">MVC = Restaurante tradicional</h3>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #4299e1; color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">1</span>
+                                <strong>Modelo:</strong> La cocina (ingredientes)
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #4299e1; color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">2</span>
+                                <strong>Vista:</strong> El menú y el plato servido
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #4299e1; color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">3</span>
+                                <strong>Controlador:</strong> El mesero (toma orden, trae plato)
+                            </li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic;">"El cliente ve el menú, el mesero traduce, la cocina prepara"</p>
+                    </div>
+                    
+                    <div class="metafora metafora-csr">
+                        <div class="metafora-icon">🚚</div>
+                        <h3 style="color: #276749; margin-bottom: 15px;">CSR = Delivery (Rappi)</h3>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #6db33f; color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">1</span>
+                                <strong>Controller:</strong> El repartidor (solo entrega)
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #6db33f; color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">2</span>
+                                <strong>Service:</strong> El restaurante (prepara la comida)
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #6db33f; color: white; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">3</span>
+                                <strong>Repository:</strong> El supermercado (ingredientes)
+                            </li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic;">"El repartidor NO cocina, solo lleva el pedido"</p>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 16px; margin-top: 20px; text-align: center;">
+                    <p style="font-size: 1.2rem;">
+                        <span class="highlight">DIFERENCIA CLAVE:</span> 
+                        MVC muestra el plato (HTML). CSR entrega la comida empaquetada (JSON).
+                    </p>
+                </div>
+            </div>
+
+            <!-- ============ TABLA COMPARATIVA DETALLADA ============ -->
+            <h2 style="font-size: 2rem; margin: 50px 0 20px 0; display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-balance-scale"></i> Comparación directa
+            </h2>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>Característica</th>
+                    <th>MVC (Modelo-Vista-Controlador)</th>
+                    <th>CSR (Controller-Service-Repository)</th>
+                </tr>
+                <tr>
+                    <td><strong>¿Qué devuelve?</strong></td>
+                    <td><span style="background: #4299e1; color: white; padding: 5px 15px; border-radius: 20px;">HTML, JSP, Thymeleaf</span></td>
+                    <td><span style="background: #6db33f; color: white; padding: 5px 15px; border-radius: 20px;">JSON, XML</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Anotación principal</strong></td>
+                    <td><code>@Controller</code></td>
+                    <td><code>@RestController</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Separación de responsabilidades</strong></td>
+                    <td>Vista separada del Controlador</td>
+                    <td>Controller recibe, Service procesa, Repository consulta</td>
+                </tr>
+                <tr>
+                    <td><strong>¿Dónde vive la lógica?</strong></td>
+                    <td>En el Controlador (a veces)</td>
+                    <td>✅ EN EL SERVICE (obligatorio)</td>
+                </tr>
+                <tr>
+                    <td><strong>¿Dónde vive el acceso a datos?</strong></td>
+                    <td>En el Controlador o Modelo</td>
+                    <td>✅ EN EL REPOSITORY (obligatorio)</td>
+                </tr>
+                <tr>
+                    <td><strong>Acoplamiento</strong></td>
+                    <td>Alto (vista atada al controlador)</td>
+                    <td>Bajo (cada capa independiente)</td>
+                </tr>
+                <tr>
+                    <td><strong>Testeabilidad</strong></td>
+                    <td>Difícil (hay que renderizar HTML)</td>
+                    <td>✅ Fácil (pruebas unitarias por capa)</td>
+                </tr>
+                <tr>
+                    <td><strong>¿Para qué se usa?</strong></td>
+                    <td>Aplicaciones web tradicionales</td>
+                    <td>APIs REST, microservicios, backends</td>
+                </tr>
+                <tr>
+                    <td><strong>Ejemplo real</strong></td>
+                    <td>BancoEstado - web antigua</td>
+                    <td>MercadoLibre API, Spotify API</td>
+                </tr>
+            </table>
+
+            <!-- ============ EJEMPLO PRÁCTICO: MISMO PROBLEMA, DOS SOLUCIONES ============ -->
+            <h2 style="font-size: 2rem; margin: 60px 0 20px 0; display: flex; align-items: center; gap: 15px;">
+                <i class="fas fa-code"></i> Mismo problema, dos enfoques
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <!-- MVC -->
+                <div style="background: #ebf8ff; padding: 25px; border-radius: 20px;">
+                    <h3 style="display: flex; align-items: center; gap: 10px; color: #2c5282; margin-bottom: 20px;">
+                        <i class="fas fa-window-maximize"></i> Enfoque MVC
+                    </h3>
+                    <p><strong>Problema:</strong> Mostrar lista de estudiantes</p>
+                    <div style="background: white; padding: 20px; border-radius: 16px; margin-top: 15px;">
+                        <code style="font-size: 1rem;">
+                            @Controller<br>
+                            public class EstudianteController {<br>
+                            &nbsp;&nbsp;@GetMapping("/estudiantes")<br>
+                            &nbsp;&nbsp;public String verEstudiantes(Model model) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;List<Estudiante> lista = servicio.findAll();<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;model.addAttribute("estudiantes", lista);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return "estudiantes"; // HTML<br>
+                            &nbsp;&nbsp;}<br>
+                            }
+                        </code>
+                    </div>
+                    <p style="margin-top: 15px;">🔗 URL: <code>/estudiantes</code> → Abre una página HTML</p>
+                </div>
+                
+                <!-- CSR -->
+                <div style="background: #f0fff4; padding: 25px; border-radius: 20px;">
+                    <h3 style="display: flex; align-items: center; gap: 10px; color: #276749; margin-bottom: 20px;">
+                        <i class="fas fa-microchip"></i> Enfoque CSR
+                    </h3>
+                    <p><strong>Problema:</strong> Entregar datos de estudiantes</p>
+                    <div style="background: white; padding: 20px; border-radius: 16px; margin-top: 15px;">
+                        <code style="font-size: 1rem;">
+                            @RestController<br>
+                            @RequestMapping("/api/estudiantes")<br>
+                            public class EstudianteController {<br>
+                            &nbsp;&nbsp;@Autowired<br>
+                            &nbsp;&nbsp;private EstudianteService service;<br>
+                            &nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;@GetMapping<br>
+                            &nbsp;&nbsp;public List<Estudiante> listar() {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return service.obtenerTodos();<br>
+                            &nbsp;&nbsp;}<br>
+                            }
+                        </code>
+                    </div>
+                    <p style="margin-top: 15px;">🔗 URL: <code>/api/estudiantes</code> → Devuelve [{...}, {...}] JSON</p>
+                </div>
+            </div>
+
+            <!-- ============ ¿CUÁNDO USAR CADA UNO? ============ -->
+            <div style="background: #1e293b; border-radius: 30px; padding: 40px; margin: 50px 0; color: white;">
+                <h2 style="color: white; display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
+                    <i class="fas fa-compass"></i> ¿Cuándo usar cada arquitectura?
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px);">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px; color: #4299e1;">🖥️</div>
+                        <h3 style="color: #90cdf4; margin-bottom: 20px;">Usa MVC cuando...</h3>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #4299e1; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                Haces una página web con HTML
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #4299e1; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                El servidor RENDERIZA la vista
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #4299e1; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                Usas JSP, Thymeleaf, Freemarker
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #4299e1; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                Ejemplo: Sistema interno de una empresa
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px);">
+                        <div style="font-size: 2.5rem; margin-bottom: 15px; color: #6db33f;">📱</div>
+                        <h3 style="color: #b9f5d9; margin-bottom: 20px;">Usa CSR cuando...</h3>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #6db33f; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                Construyes una API REST
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #6db33f; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                Tienes frontend separado (React, Vue, Angular)
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #6db33f; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                Haces microservicios
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                                <span style="background: #6db33f; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                                Ejemplo: Backend de una app móvil
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ RESUMEN: LA GRAN DIFERENCIA ============ -->
+            <div class="conclusion">
+                <div style="display: flex; align-items: center; gap: 30px; flex-wrap: wrap;">
+                    <div style="font-size: 4rem;">🎯</div>
+                    <div style="flex: 1;">
+                        <h2 style="color: white; margin-bottom: 15px; font-size: 2rem;">En una frase:</h2>
+                        <p style="font-size: 1.4rem; font-weight: 600;">
+                            MVC = El controlador <strong style="background: rgba(0,0,0,0.2); padding: 5px 15px; border-radius: 50px;">PREPARA LA VISTA</strong>
+                        </p>
+                        <p style="font-size: 1.4rem; font-weight: 600; margin-top: 10px;">
+                            CSR = El controlador <strong style="background: rgba(0,0,0,0.2); padding: 5px 15px; border-radius: 50px;">SOLO ENTREGA DATOS</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ ¿Y SI LOS MEZCLAMOS? ============ -->
+            <div style="background: #f8fafc; padding: 35px; border-radius: 24px; margin-top: 40px; border: 3px solid #6db33f;">
+                <h3 style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; color: #1e293b;">
+                    <i class="fas fa-puzzle-piece" style="color: #6db33f;"></i>
+                    ¿Pueden convivir MVC y CSR?
+                </h3>
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">
+                    <span style="background: #6db33f; color: white; padding: 5px 20px; border-radius: 50px; font-weight: bold;">SÍ</span> 
+                    De hecho, es muy común tener ambas:
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="background: white; padding: 20px; border-radius: 16px; border-left: 8px solid #4299e1;">
+                        <h4 style="color: #2c5282;">🌐 Parte MVC</h4>
+                        <p><code>/admin/panel</code> → HTML para administradores</p>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 16px; border-left: 8px solid #6db33f;">
+                        <h4 style="color: #276749;">📱 Parte CSR</h4>
+                        <p><code>/api/estudiantes</code> → JSON para la app móvil</p>
+                    </div>
+                </div>
+                <p style="margin-top: 20px; font-style: italic;">
+                    → Spring Boot te deja usar AMBAS en el mismo proyecto. Lo importante es entender qué problema resuelve cada una.
+                </p>
+            </div>
+
+            <!-- ============ CHECKLIST FINAL ============ -->
+            <div style="margin-top: 50px; padding: 30px; background: linear-gradient(145deg, #faf5ff, white); border-radius: 24px;">
+                <h3 style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                    <i class="fas fa-clipboard-check" style="color: #9f7aea;"></i>
+                    Para tu examen: Así los identificas
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="display: flex; align-items: start; gap: 15px;">
+                        <div style="background: #4299e1; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+                        <div>
+                            <strong>Si ves @Controller</strong>
+                            <p style="color: #4a5568;">Es MVC. Devuelve HTML, JSP, Thymeleaf.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: start; gap: 15px;">
+                        <div style="background: #6db33f; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+                        <div>
+                            <strong>Si ves @RestController</strong>
+                            <p style="color: #4a5568;">Es CSR. Devuelve JSON.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: start; gap: 15px;">
+                        <div style="background: #9f7aea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+                        <div>
+                            <strong>Si ves @Service y @Repository</strong>
+                            <p style="color: #4a5568;">Estás en CSR. La lógica está separada.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: start; gap: 15px;">
+                        <div style="background: #f59e0b; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">4</div>
+                        <div>
+                            <strong>Si ves Model.addAttribute()</strong>
+                            <p style="color: #4a5568;">Es MVC. Estás pasando datos a una vista.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- FIN CONTENT -->
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div style="font-size: 4rem; margin-bottom: 20px;">
+                <i class="fas fa-leaf" style="color: #6db33f;"></i>
+            </div>
+            <h2 style="color: white; margin-bottom: 20px; font-size: 2rem;">MVC vs CSR</h2>
+            <p style="max-width: 700px; margin: 0 auto; font-size: 1.2rem; opacity: 0.95;">
+                MVC nació para páginas web. CSR nació para APIs. Ambos son Spring. 
+                Eliges según lo que necesites construir.
+            </p>
+            <p style="margin-top: 30px; color: #6db33f; font-weight: 600; font-size: 1.3rem;">
+                "El Controller SOLO recibe peticiones, el Service trabaja, el Repository consulta"
+            </p>
+            <p style="margin-top: 30px; opacity: 0.7;">
+                <i class="fas fa-graduation-cap"></i> Material educativo para estudiantes de Spring Boot
+            </p>
+        </div>
+    </div>
+</body>
+</html>
